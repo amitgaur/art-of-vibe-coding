@@ -8,29 +8,41 @@
   --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   --font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Code", "Fira Mono", "Roboto Mono", monospace;
 
-  --color-black: #000000;
-  --color-white: #ffffff;
-  --color-gray-50: #fafafa;
-  --color-gray-100: #f5f5f5;
-  --color-gray-200: #e5e5e5;
-  --color-gray-300: #d4d4d4;
-  --color-gray-400: #a3a3a3;
-  --color-gray-500: #737373;
-  --color-gray-600: #525252;
-  --color-gray-700: #404040;
-  --color-gray-800: #262626;
-  --color-gray-900: #171717;
+  /* Dark theme colors inspired by scale.com and bacca.ai */
+  --color-bg-primary: #0a0a0a;
+  --color-bg-secondary: #111111;
+  --color-bg-tertiary: #1a1a1a;
+  --color-bg-elevated: #1f1f1f;
+  --color-bg-overlay: rgba(0, 0, 0, 0.8);
 
-  --color-primary: #0070f3;
-  --color-primary-dark: #0051cc;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a3a3a3;
+  --color-text-tertiary: #737373;
+  --color-text-inverse: #000000;
+
+  --color-border-primary: #262626;
+  --color-border-secondary: #1a1a1a;
+  --color-border-highlight: #404040;
+
+  /* Accent colors */
+  --color-accent-primary: #3b82f6;
+  --color-accent-secondary: #10b981;
+  --color-accent-tertiary: #8b5cf6;
+  --color-accent-warning: #f59e0b;
+  --color-accent-error: #ef4444;
+
+  /* Gradient accents */
+  --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  --gradient-secondary: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+  --gradient-subtle: linear-gradient(180deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%);
 
   font-family: var(--font-sans);
   line-height: 1.6;
   font-weight: 400;
 
-  color-scheme: light;
-  color: var(--color-black);
-  background-color: var(--color-white);
+  color-scheme: dark;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -44,6 +56,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
+  background: var(--color-bg-primary);
 }
 
 #root {
@@ -75,11 +88,11 @@ h3 {
 p {
   font-size: 1rem;
   line-height: 1.7;
-  color: var(--color-gray-600);
+  color: var(--color-text-secondary);
 }
 
 a {
-  color: var(--color-primary);
+  color: var(--color-accent-primary);
   text-decoration: none;
   transition: opacity 0.2s ease;
 }
@@ -102,11 +115,11 @@ button {
 
 input:focus,
 textarea:focus {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-accent-primary);
   outline-offset: 2px;
 }
 
 ::selection {
-  background-color: var(--color-primary);
-  color: var(--color-white);
+  background-color: var(--color-accent-primary);
+  color: var(--color-text-primary);
 }

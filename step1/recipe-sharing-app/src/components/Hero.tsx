@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { heroContent } from '../content/features';
 
 interface HeroProps {
@@ -5,7 +6,7 @@ interface HeroProps {
   tagline?: string;
 }
 
-export function Hero({
+export const Hero = memo(function Hero({
   title = heroContent.title,
   tagline = heroContent.tagline
 }: HeroProps) {
@@ -15,4 +16,4 @@ export function Hero({
       <p className="tagline">{tagline}</p>
     </header>
   );
-}
+});

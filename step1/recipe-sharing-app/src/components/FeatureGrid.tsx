@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import { features } from '../content/features';
 
-export function FeatureGrid() {
+export const FeatureGrid = memo(function FeatureGrid() {
   return (
     <section className="features">
       <h2>What's Coming</h2>
@@ -14,4 +15,4 @@ export function FeatureGrid() {
       </div>
     </section>
   );
-}
+});

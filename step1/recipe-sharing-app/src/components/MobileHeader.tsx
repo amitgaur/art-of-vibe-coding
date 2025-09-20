@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
 interface MobileHeaderProps {
   showMenu?: boolean;
 }
 
-export function MobileHeader({ showMenu = false }: MobileHeaderProps) {
+export const MobileHeader = memo(function MobileHeader({ showMenu = false }: MobileHeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   if (!showMenu) return null;
@@ -38,4 +38,4 @@ export function MobileHeader({ showMenu = false }: MobileHeaderProps) {
       )}
     </nav>
   );
-}
+});

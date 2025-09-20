@@ -1,4 +1,5 @@
-import { useState, FormEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { FormEvent } from 'react';
 import { z } from 'zod';
 
 const waitlistSchema = z.object({
@@ -10,6 +11,11 @@ const waitlistSchema = z.object({
 });
 
 type WaitlistData = z.infer<typeof waitlistSchema>;
+
+const fieldSchemas: Record<keyof WaitlistData, z.ZodString> = {
+  name: waitlistSchema.shape.name,
+  email: waitlistSchema.shape.email
+};
 
 interface ValidationErrors {
   name?: string;
@@ -25,19 +31,16 @@ export function WaitlistForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  const successResetTimeoutRef = useRef<ReturnType<typeof window.setTimeout> | null>(null);
 
   const validateField = (field: keyof WaitlistData, value: string) => {
     try {
-      const fieldSchema = field === 'name'
-        ? z.string().min(2, 'Name must be at least 2 characters').max(50)
-        : z.string().email('Please enter a valid email address');
-
-      fieldSchema.parse(value);
+      fieldSchemas[field].parse(value);
       setErrors(prev => ({ ...prev, [field]: undefined }));
       return true;
     } catch (error) {
       if (error instanceof z.ZodError) {
-        setErrors(prev => ({ ...prev, [field]: error.errors[0]?.message }));
+        setErrors(prev => ({ ...prev, [field]: error.issues[0]?.message }));
       }
       return false;
     }
@@ -103,8 +106,13 @@ export function WaitlistForm() {
         setErrors({});
 
         // Reset success message after 4 seconds
-        setTimeout(() => {
+        if (successResetTimeoutRef.current) {
+          window.clearTimeout(successResetTimeoutRef.current);
+        }
+
+        successResetTimeoutRef.current = window.setTimeout(() => {
           setIsSuccess(false);
+          successResetTimeoutRef.current = null;
         }, 4000);
       } catch (error) {
         setApiError(error instanceof Error ? error.message : 'Something went wrong');
@@ -114,15 +122,24 @@ export function WaitlistForm() {
     } catch (error) {
       if (error instanceof z.ZodError) {
         const newErrors: ValidationErrors = {};
-        error.errors.forEach(err => {
-          if (err.path[0] === 'name' || err.path[0] === 'email') {
-            newErrors[err.path[0] as keyof ValidationErrors] = err.message;
+        error.issues.forEach((issue: z.ZodIssue) => {
+          const fieldName = issue.path[0];
+          if (fieldName === 'name' || fieldName === 'email') {
+            newErrors[fieldName as keyof ValidationErrors] = issue.message;
           }
         });
         setErrors(newErrors);
       }
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (successResetTimeoutRef.current) {
+        window.clearTimeout(successResetTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <section className="waitlist-section">
@@ -143,10 +160,10 @@ export function WaitlistForm() {
             <div className="error-message" style={{
               padding: '12px',
               marginBottom: '20px',
-              background: '#fef2f2',
-              border: '1px solid #fecaca',
+              background: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.3)',
               borderRadius: '8px',
-              color: '#dc2626',
+              color: '#ef4444',
               fontSize: '0.875rem'
             }}>
               {apiError}
@@ -167,7 +184,8 @@ export function WaitlistForm() {
               autoComplete="name"
               inputMode="text"
               style={{
-                borderColor: errors.name ? '#ef4444' : undefined
+                borderColor: errors.name ? 'rgba(239, 68, 68, 0.5)' : undefined,
+                background: errors.name ? 'rgba(239, 68, 68, 0.05)' : undefined
               }}
             />
             {errors.name && (
@@ -178,7 +196,8 @@ export function WaitlistForm() {
                   display: 'block',
                   marginTop: '4px',
                   fontSize: '0.875rem',
-                  color: '#ef4444'
+                  color: '#ef4444',
+                  fontWeight: '500'
                 }}
               >
                 {errors.name}
@@ -202,7 +221,8 @@ export function WaitlistForm() {
               autoCapitalize="off"
               autoCorrect="off"
               style={{
-                borderColor: errors.email ? '#ef4444' : undefined
+                borderColor: errors.email ? 'rgba(239, 68, 68, 0.5)' : undefined,
+                background: errors.email ? 'rgba(239, 68, 68, 0.05)' : undefined
               }}
             />
             {errors.email && (
@@ -213,7 +233,8 @@ export function WaitlistForm() {
                   display: 'block',
                   marginTop: '4px',
                   fontSize: '0.875rem',
-                  color: '#ef4444'
+                  color: '#ef4444',
+                  fontWeight: '500'
                 }}
               >
                 {errors.email}
