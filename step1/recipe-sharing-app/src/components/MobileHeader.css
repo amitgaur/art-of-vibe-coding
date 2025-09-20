@@ -1,0 +1,123 @@
+/* Mobile Header Styles */
+.mobile-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-gray-200);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.mobile-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-black);
+  letter-spacing: -0.02em;
+}
+
+/* Menu Toggle Button */
+.menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.menu-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  position: relative;
+}
+
+.menu-line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--color-black);
+  border-radius: 1px;
+  transition: all 0.3s ease;
+}
+
+.menu-toggle:hover .menu-line {
+  background: var(--color-gray-700);
+}
+
+.menu-toggle[aria-expanded="true"] .menu-line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.menu-toggle[aria-expanded="true"] .menu-line:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle[aria-expanded="true"] .menu-line:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-gray-200);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.3s ease-out;
+}
+
+.mobile-menu a {
+  display: block;
+  padding: 16px 20px;
+  color: var(--color-black);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--color-gray-100);
+  transition: background 0.2s ease;
+}
+
+.mobile-menu a:hover {
+  background: var(--color-gray-50);
+}
+
+.mobile-menu a:active {
+  background: var(--color-gray-100);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hide on desktop */
+@media (min-width: 768px) {
+  .mobile-header {
+    display: none;
+  }
+}
